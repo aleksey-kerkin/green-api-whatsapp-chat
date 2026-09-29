@@ -74,9 +74,7 @@ export function ChatScreen({
         <div className={styles.banners}>
           {storageWarning ? (
             <p className={`${styles.banner} ${styles.bannerWarning}`}>
-              Не удалось сохранить переписку.{' '}
-              <span className={styles.bannerWarningPart}>после обновления страницы</span>
-              {' '}она пропадёт.
+              Не удалось сохранить переписку. После обновления страницы она пропадёт.
             </p>
           ) : null}
           {stateText ? (

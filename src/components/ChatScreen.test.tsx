@@ -43,7 +43,7 @@ describe('ChatScreen', () => {
   it('shows the state, storage, and receive banners', () => {
     renderScreen(false, null)
     expect(screen.getByText('Аккаунт не авторизован')).toBeInTheDocument()
-    expect(screen.getByText(/после обновления страницы/)).toBeInTheDocument()
+    expect(screen.getByText(/После обновления страницы/)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Включить получение' })).toBeInTheDocument()
   })
 
