@@ -36,6 +36,22 @@ describe('greenApi', () => {
     expect(fetchMock.mock.calls[2][1]).toMatchObject({ method: 'DELETE' })
   })
 
+  it('aborts receiveNotification after 60 seconds via AbortSignal.timeout', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(jsonResponse(null))
+    vi.stubGlobal('fetch', fetchMock)
+    const timeoutSpy = vi.spyOn(AbortSignal, 'timeout')
+
+    await receiveNotification(credentials)
+    expect(timeoutSpy).toHaveBeenCalledWith(60_000)
+
+    timeoutSpy.mockClear()
+    fetchMock.mockResolvedValueOnce(jsonResponse({ idMessage: 'abc' }))
+    await sendMessage(credentials, '79001112233@c.us', 'hi')
+    expect(timeoutSpy).not.toHaveBeenCalled()
+
+    timeoutSpy.mockRestore()
+  })
+
   it('returns null for an empty notification and the receipt otherwise', async () => {
     const fetchMock = vi.fn()
       .mockResolvedValueOnce(jsonResponse(null))
