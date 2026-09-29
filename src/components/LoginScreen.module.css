@@ -1,0 +1,6 @@
+.screen { min-height: 100%; display: grid; place-items: center; background: #111b21; padding: 24px; }
+.card { width: min(420px, 100%); background: #fff; border-radius: 12px; padding: 24px; display: grid; gap: 12px; }
+.label { display: grid; gap: 4px; font-size: 14px; }
+.input { border: 1px solid #d1d7db; border-radius: 8px; padding: 10px 12px; }
+.button { background: #00a884; color: #fff; border: 0; border-radius: 8px; padding: 10px 12px; cursor: pointer; }
+.error { color: #c00; margin: 0; }
