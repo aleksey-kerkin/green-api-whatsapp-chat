@@ -9,6 +9,21 @@ import styles from './ChatScreen.module.css'
 
 const NARROW_QUERY = '(max-width: 767px)'
 
+const AVATAR_COLORS = ['#00a884', '#53bdeb', '#e67e22', '#7f66ff', '#ff5c8d', '#027eb5']
+
+function avatarLabel(title: string): string {
+  const letters = title.replace(/[^A-Za-zА-Яа-яЁё]/g, '')
+  if (letters) return letters.slice(0, 1).toUpperCase()
+  const digits = title.replace(/\D/g, '')
+  return digits.slice(-2) || '?'
+}
+
+function avatarColor(id: string): string {
+  let hash = 0
+  for (const char of id) hash = (hash + char.charCodeAt(0)) % AVATAR_COLORS.length
+  return AVATAR_COLORS[hash] ?? AVATAR_COLORS[0]
+}
+
 type Props = {
   chats: Chat[]
   activeChatId: string | null
@@ -100,17 +115,27 @@ export function ChatScreen({
                   className={isActive ? `${styles.chatRow} ${styles.chatRowActive}` : styles.chatRow}
                   onClick={() => onSelect(chat.chatId)}
                 >
-                  <div className={styles.chatRowTop}>
-                    <span className={styles.chatTitle}>{chat.title}</span>
-                    {lastMessage ? (
-                      <time className={styles.chatTime}>
-                        {formatChatTime(lastMessage.timestamp, now)}
-                      </time>
-                    ) : null}
-                  </div>
-                  <span className={styles.chatPreview}>
-                    {lastMessage ? lastMessage.text : 'Нет сообщений'}
+                  <span
+                    className={styles.avatar}
+                    data-avatar=""
+                    style={{ background: avatarColor(chat.chatId) }}
+                    aria-hidden="true"
+                  >
+                    {avatarLabel(chat.title)}
                   </span>
+                  <div className={styles.chatMain}>
+                    <div className={styles.chatRowTop}>
+                      <span className={styles.chatTitle}>{chat.title}</span>
+                      {lastMessage ? (
+                        <time className={styles.chatTime}>
+                          {formatChatTime(lastMessage.timestamp, now)}
+                        </time>
+                      ) : null}
+                    </div>
+                    <span className={styles.chatPreview}>
+                      {lastMessage ? lastMessage.text : 'Нет сообщений'}
+                    </span>
+                  </div>
                 </button>
               </li>
             )

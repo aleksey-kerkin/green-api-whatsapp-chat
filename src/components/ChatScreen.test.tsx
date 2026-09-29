@@ -55,4 +55,33 @@ describe('ChatScreen', () => {
     renderScreen(false, chats[0].chatId)
     expect(screen.queryByRole('button', { name: 'Назад' })).not.toBeInTheDocument()
   })
+
+  it('shows an avatar initial for a titled chat', () => {
+    const named = [{ ...chats[0], title: 'Anastasia' }]
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      addEventListener: () => undefined,
+      removeEventListener: () => undefined,
+      dispatchEvent: () => false,
+    }))
+    render(
+      <ChatScreen
+        chats={named}
+        activeChatId={null}
+        stateInstance="authorized"
+        showEnableReceive={false}
+        storageWarning={false}
+        now={now}
+        onLogout={vi.fn()}
+        onSelect={vi.fn()}
+        onCreate={vi.fn()}
+        onSend={vi.fn()}
+        onRetry={vi.fn()}
+        onEnableReceive={vi.fn()}
+      />,
+    )
+    expect(screen.getByText('A', { selector: '[data-avatar]' })).toBeInTheDocument()
+    expect(screen.getByText('Anastasia')).toBeInTheDocument()
+  })
 })
