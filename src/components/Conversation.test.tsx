@@ -43,4 +43,25 @@ describe('Conversation', () => {
     await userEvent.type(input, '  ещё{Shift>}{Enter}{/Shift}строка{Enter}')
     expect(onSend).toHaveBeenCalledWith('ещё\nстрока')
   })
+
+  it('renders messages in order inside a bottom-aligned stack', () => {
+    const transcript: Chat = {
+      ...chat,
+      messages: [
+        chat.messages[0],
+        {
+          localId: 'local-2',
+          text: 'ответ',
+          direction: 'in',
+          timestamp: now,
+        },
+      ],
+    }
+    render(<Conversation chat={transcript} now={now} onSend={vi.fn()} onRetry={vi.fn()} />)
+    const stack = screen.getByTestId('message-stack')
+    const list = screen.getByTestId('message-list')
+    expect(list).toContainElement(stack)
+    expect(stack.textContent?.indexOf('привет')).toBeLessThan(stack.textContent?.indexOf('ответ') ?? -1)
+    expect(screen.getByLabelText('ошибка')).toHaveTextContent('!')
+  })
 })

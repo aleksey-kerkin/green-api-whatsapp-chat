@@ -1,4 +1,4 @@
-import { useState, type KeyboardEvent } from 'react'
+import { useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { formatChatTime } from '../model/time'
 import type { Chat, DeliveryStatus, Message } from '../model/types'
 import { MESSAGE_LIMIT } from '../model/types'
@@ -30,6 +30,23 @@ function statusAriaLabel(status: DeliveryStatus | undefined): string | undefined
   }
 }
 
+function statusMark(status: DeliveryStatus): string {
+  switch (status) {
+    case 'pending':
+      return '◌'
+    case 'sent':
+      return '✓'
+    case 'delivered':
+    case 'read':
+      return '✓✓'
+    case 'failed':
+    case 'noActiveSession':
+      return '!'
+    default:
+      return ''
+  }
+}
+
 function MessageBubble({
   message,
   now,
@@ -57,7 +74,7 @@ function MessageBubble({
             className={status === 'read' ? styles.statusRead : isError ? styles.statusError : styles.status}
             aria-label={ariaLabel}
           >
-            {ariaLabel}
+            {statusMark(status)}
           </span>
         ) : null}
       </div>
@@ -77,6 +94,13 @@ function MessageBubble({
 
 export function Conversation({ chat, now, onSend, onRetry }: Props) {
   const [value, setValue] = useState('')
+  const listRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const node = listRef.current
+    if (!node) return
+    node.scrollTop = node.scrollHeight
+  }, [chat?.chatId, chat?.messages.length])
 
   const trimmed = value.trim()
   const overLimit = value.length > MESSAGE_LIMIT
@@ -108,15 +132,17 @@ export function Conversation({ chat, now, onSend, onRetry }: Props) {
       <header className={styles.header}>
         <h2>{chat.title}</h2>
       </header>
-      <div className={styles.messages}>
-        {chat.messages.map((message) => (
-          <MessageBubble
-            key={message.localId}
-            message={message}
-            now={now}
-            onRetry={onRetry}
-          />
-        ))}
+      <div className={styles.messages} data-testid="message-list" ref={listRef}>
+        <div className={styles.messagesStack} data-testid="message-stack">
+          {chat.messages.map((message) => (
+            <MessageBubble
+              key={message.localId}
+              message={message}
+              now={now}
+              onRetry={onRetry}
+            />
+          ))}
+        </div>
       </div>
       <form
         className={styles.form}

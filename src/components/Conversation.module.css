@@ -20,11 +20,20 @@
 
 .messages {
   flex: 1;
-  overflow: auto;
-  padding: 1rem;
+  min-height: 0;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  background: #efeae2;
+}
+
+.messagesStack {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+  min-height: 100%;
+  padding: 12px 7%;
 }
 
 .bubbleOut {
