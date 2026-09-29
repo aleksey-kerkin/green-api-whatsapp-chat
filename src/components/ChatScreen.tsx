@@ -8,7 +8,7 @@ import { NewChatDialog } from './NewChatDialog'
 import { avatarLabel } from './avatarLabel'
 import styles from './ChatScreen.module.css'
 
-const NARROW_QUERY = '(max-width: 767px)'
+const WIDE_QUERY = '(min-width: 48rem)'
 
 const AVATAR_COLORS = ['#00a884', '#53bdeb', '#e67e22', '#7f66ff', '#ff5c8d', '#027eb5']
 
@@ -54,19 +54,19 @@ export function ChatScreen({
   onRetry,
   onEnableReceive,
 }: Props) {
-  const [narrow, setNarrow] = useState(() => window.matchMedia(NARROW_QUERY).matches)
+  const [wide, setWide] = useState(() => window.matchMedia(WIDE_QUERY).matches)
   const [dialogOpen, setDialogOpen] = useState(false)
 
   useEffect(() => {
-    const media = window.matchMedia(NARROW_QUERY)
-    const onChange = () => setNarrow(media.matches)
-    setNarrow(media.matches)
+    const media = window.matchMedia(WIDE_QUERY)
+    const onChange = () => setWide(media.matches)
+    setWide(media.matches)
     media.addEventListener('change', onChange)
     return () => media.removeEventListener('change', onChange)
   }, [])
 
-  const showList = !narrow || !activeChatId
-  const showConversation = !narrow || Boolean(activeChatId)
+  const showList = wide || !activeChatId
+  const showConversation = wide || Boolean(activeChatId)
   const activeChat = activeChatId
     ? chats.find((chat) => chat.chatId === activeChatId) ?? null
     : null
@@ -137,7 +137,7 @@ export function ChatScreen({
         </ul>
       </aside>
       <section className={showConversation ? styles.conversationPane : styles.conversationPaneHidden}>
-        {narrow && activeChatId ? (
+        {!wide && activeChatId ? (
           <div className={styles.backBar}>
             <button type="button" className={styles.backButton} onClick={() => onSelect('')}>
               Назад

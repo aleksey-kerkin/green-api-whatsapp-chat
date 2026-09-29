@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { ChatScreen } from './ChatScreen'
@@ -14,7 +15,7 @@ const chats: Chat[] = [{
 
 function renderScreen(narrow: boolean, activeChatId: string | null) {
   window.matchMedia = vi.fn().mockImplementation((query: string) => ({
-    matches: narrow && query.includes('max-width: 767px'),
+    matches: !narrow && query.includes('min-width: 48rem'),
     media: query,
     addEventListener: () => undefined,
     removeEventListener: () => undefined,
@@ -83,5 +84,16 @@ describe('ChatScreen', () => {
     )
     expect(screen.getByText('A', { selector: '[data-avatar]' })).toBeInTheDocument()
     expect(screen.getByText('Anastasia')).toBeInTheDocument()
+  })
+
+  it('gives the wide list a flexible third and the narrow list the full width', () => {
+    const moduleUrl = import.meta.url
+    const css = readFileSync(new URL('./ChatScreen.module.css', moduleUrl), 'utf8')
+    const sidebar = css.slice(css.indexOf('.sidebar {'), css.indexOf('.sidebarHidden {'))
+    expect(sidebar).not.toMatch(/max-width\s*:/)
+    const wide = css.slice(css.indexOf('@media (min-width: 48rem)'))
+    expect(wide).toContain('flex: 0 1 32%')
+    expect(wide).toContain('min-width: 17.5rem')
+    expect(wide).toContain('max-width: 30rem')
   })
 })
