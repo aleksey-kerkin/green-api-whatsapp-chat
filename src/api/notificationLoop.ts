@@ -43,8 +43,8 @@ export function startNotificationLoop(
         const notice = await deps.receive(credentials, controller.signal)
         delay = 1000
         if (!notice) continue
-        handlers.onBody(notice.body)
         pendingDelete = notice.receiptId
+        handlers.onBody(notice.body)
       } catch {
         if (controller.signal.aborted) return
         await deps.sleep(delay)
