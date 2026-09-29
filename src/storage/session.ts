@@ -1,6 +1,7 @@
 import type { Chat, Credentials } from '../model/types'
 
 const CREDENTIALS_KEY = 'wa-chat:credentials'
+const API_URL = 'https://api.green-api.com'
 
 function chatsKey(idInstance: string): string {
   return `wa-chat:chats:${idInstance}`
@@ -11,8 +12,8 @@ export function loadCredentials(): Credentials | null {
   if (!raw) return null
   try {
     const parsed = JSON.parse(raw) as Credentials
-    if (!parsed.apiUrl || !parsed.idInstance || !parsed.apiTokenInstance) return null
-    return parsed
+    if (!parsed.idInstance || !parsed.apiTokenInstance) return null
+    return { ...parsed, apiUrl: API_URL }
   } catch {
     return null
   }

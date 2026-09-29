@@ -19,6 +19,18 @@ const chat: Chat = {
 describe('session', () => {
   beforeEach(() => localStorage.clear())
 
+  it('normalizes a stored custom apiUrl to the fixed API host', () => {
+    localStorage.setItem(
+      'wa-chat:credentials',
+      JSON.stringify({
+        apiUrl: 'https://custom.example.com',
+        idInstance: '1234',
+        apiTokenInstance: 'token',
+      }),
+    )
+    expect(loadCredentials()).toEqual(credentials)
+  })
+
   it('round-trips credentials and clears only them', () => {
     saveCredentials(credentials)
     saveChats(credentials.idInstance, [chat])
