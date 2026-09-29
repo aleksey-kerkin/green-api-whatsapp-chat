@@ -1,0 +1,156 @@
+.screen {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  background: #f0f2f5;
+}
+
+.sidebar {
+  width: 100%;
+  max-width: 30rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: #fff;
+  border-right: 1px solid #d1d7db;
+}
+
+.sidebarHidden {
+  display: none;
+}
+
+.toolbar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #d1d7db;
+  background: #f0f2f5;
+}
+
+.banners {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.banner {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-bottom: 1px solid #d1d7db;
+}
+
+.bannerWarning {
+  background: #fff3cd;
+  color: #664d03;
+}
+
+.bannerWarningPart::first-letter {
+  text-transform: uppercase;
+}
+
+.bannerState {
+  background: #fff8e1;
+  color: #5d4037;
+}
+
+.bannerReceive {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: #e3f2fd;
+  color: #0d47a1;
+}
+
+.chatList {
+  flex: 1;
+  overflow: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chatRow {
+  width: 100%;
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  border: 0;
+  border-bottom: 1px solid #e9edef;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.chatRow:hover {
+  background: #f5f6f6;
+}
+
+.chatRowActive {
+  background: #f0f2f5;
+}
+
+.chatRowTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.chatTitle {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chatTime {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: #667781;
+}
+
+.chatPreview {
+  font-size: 0.875rem;
+  color: #667781;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conversationPane {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: #efeae2;
+}
+
+.conversationPaneHidden {
+  display: none;
+}
+
+.backBar {
+  flex-shrink: 0;
+  padding: 0.5rem 0.75rem;
+  background: #f0f2f5;
+  border-bottom: 1px solid #d1d7db;
+}
+
+.backButton {
+  border: 0;
+  background: transparent;
+  color: #00a884;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  font-weight: 500;
+}
+
+.conversationBody {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
