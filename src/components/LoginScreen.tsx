@@ -3,21 +3,13 @@ import { getSettings, getStateInstance, GreenApiError, queueReady } from '../api
 import type { Credentials } from '../model/types'
 import styles from './LoginScreen.module.css'
 
+const API_URL = 'https://api.green-api.com'
+
 type Props = {
   onSuccess: (credentials: Credentials, stateInstance: string, queueReady: boolean) => void
 }
 
-function validUrl(value: string): boolean {
-  try {
-    const url = new URL(value)
-    return url.protocol === 'http:' || url.protocol === 'https:'
-  } catch {
-    return false
-  }
-}
-
 export function LoginScreen({ onSuccess }: Props) {
-  const [apiUrl, setApiUrl] = useState('https://api.green-api.com')
   const [idInstance, setIdInstance] = useState('')
   const [apiTokenInstance, setApiTokenInstance] = useState('')
   const [error, setError] = useState('')
@@ -26,20 +18,12 @@ export function LoginScreen({ onSuccess }: Props) {
   async function onSubmit(event: FormEvent) {
     event.preventDefault()
     const credentials = {
-      apiUrl: apiUrl.trim(),
+      apiUrl: API_URL,
       idInstance: idInstance.trim(),
       apiTokenInstance: apiTokenInstance.trim(),
     }
-    if (!credentials.apiUrl) {
-      setError('Укажите адрес API')
-      return
-    }
     if (!credentials.idInstance || !credentials.apiTokenInstance) {
-      setError('Укажите адрес API, idInstance и токен')
-      return
-    }
-    if (!validUrl(credentials.apiUrl)) {
-      setError('Адрес API должен быть полным http(s) URL')
+      setError('Укажите idInstance и токен')
       return
     }
     setPending(true)
@@ -66,10 +50,6 @@ export function LoginScreen({ onSuccess }: Props) {
     <main className={styles.screen}>
       <form className={styles.card} onSubmit={onSubmit}>
         <h1>Вход в GREEN-API</h1>
-        <label className={styles.label}>
-          apiUrl
-          <input className={styles.input} aria-label="apiUrl" value={apiUrl} onChange={(event) => setApiUrl(event.target.value)} />
-        </label>
         <label className={styles.label}>
           idInstance
           <input className={styles.input} aria-label="idInstance" value={idInstance} onChange={(event) => setIdInstance(event.target.value)} />

@@ -8,10 +8,10 @@ describe('LoginScreen', () => {
     const fetchMock = vi.fn()
     vi.stubGlobal('fetch', fetchMock)
     render(<LoginScreen onSuccess={vi.fn()} />)
-    await userEvent.clear(screen.getByLabelText('apiUrl'))
+    expect(screen.queryByLabelText('apiUrl')).not.toBeInTheDocument()
     await userEvent.click(screen.getByRole('button', { name: 'Войти' }))
     expect(fetchMock).not.toHaveBeenCalled()
-    expect(screen.getByRole('alert')).toHaveTextContent('Укажите адрес API')
+    expect(screen.getByRole('alert')).toHaveTextContent('Укажите idInstance и токен')
     vi.unstubAllGlobals()
   })
 

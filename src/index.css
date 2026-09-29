@@ -6,20 +6,3 @@ body {
   background: #d1d7db;
 }
 button, textarea, input { font: inherit; }
-
-@media (min-width: 768px) {
-  body::before {
-    content: "";
-    position: fixed;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 127px;
-    background: #00a884;
-  }
-
-  #root {
-    padding: 19px 16px;
-  }
-}
