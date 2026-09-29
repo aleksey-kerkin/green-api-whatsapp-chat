@@ -26,10 +26,10 @@ npm run build
 
 - [ ] Аккаунт WABA авторизован
 - [ ] Поле `webhookUrl` пустое
-- [ ] Отключён `incomingWebhook`
-- [ ] Отключён `outgoingWebhook`
-- [ ] Отключён `outgoingAPIMessageWebhook`
-- [ ] Отключён `outgoingMessageWebhook`
+- [ ] Включён `incomingWebhook` (`yes`); если выключен — после входа нажмите «Включить получение»
+- [ ] Включён `outgoingWebhook` (`yes`); если выключен — после входа нажмите «Включить получение»
+- [ ] Включён `outgoingAPIMessageWebhook` (`yes`); если выключен — после входа нажмите «Включить получение»
+- [ ] Включён `outgoingMessageWebhook` (`yes`); если выключен — после входа нажмите «Включить получение»
 
 Второй WhatsApp должен написать на номер инстанса в течение последних 24 часов до демо; иначе при отправке статус будет `noActiveSession`.
 

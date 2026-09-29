@@ -62,6 +62,7 @@ export function App() {
   chatsRef.current = chats
 
   const persist = useCallback((next: Chat[]) => {
+    chatsRef.current = next
     const creds = credentialsRef.current
     if (creds) {
       setStorageWarning(saveChats(creds.idInstance, next) === 'quota')
@@ -149,7 +150,7 @@ export function App() {
   }
 
   function handleCreate(phone: PhoneOk) {
-    const result = openChat(chats, phone, Date.now())
+    const result = openChat(chatsRef.current, phone, Date.now())
     persist(result.chats)
     setActiveChatId(result.activeChatId)
   }
@@ -158,15 +159,23 @@ export function App() {
     if (!credentials || !activeChatId) return
     const localId = crypto.randomUUID()
     const timestamp = Date.now()
-    const withPending = sendText(chats, activeChatId, text, timestamp, localId)
+    const withPending = sendText(
+      chatsRef.current,
+      activeChatId,
+      text,
+      timestamp,
+      localId,
+    )
     persist(withPending)
     try {
       const trimmed = text.trim()
       const idMessage = await sendMessage(credentials, activeChatId, trimmed)
-      persist(applySendResult(withPending, localId, { ok: true, idMessage }))
+      persist(
+        applySendResult(chatsRef.current, localId, { ok: true, idMessage }),
+      )
     } catch (error) {
       persist(
-        applySendResult(withPending, localId, {
+        applySendResult(chatsRef.current, localId, {
           ok: false,
           description: sendFailureDescription(error),
         }),
@@ -176,16 +185,18 @@ export function App() {
 
   async function handleRetry(localId: string) {
     if (!credentials) return
-    const outgoing = findOutgoingMessage(chats, localId)
+    const outgoing = findOutgoingMessage(chatsRef.current, localId)
     if (!outgoing) return
-    const retried = retryMessage(chats, localId)
+    const retried = retryMessage(chatsRef.current, localId)
     persist(retried)
     try {
       const idMessage = await sendMessage(credentials, outgoing.chatId, outgoing.text)
-      persist(applySendResult(retried, localId, { ok: true, idMessage }))
+      persist(
+        applySendResult(chatsRef.current, localId, { ok: true, idMessage }),
+      )
     } catch (error) {
       persist(
-        applySendResult(retried, localId, {
+        applySendResult(chatsRef.current, localId, {
           ok: false,
           description: sendFailureDescription(error),
         }),
