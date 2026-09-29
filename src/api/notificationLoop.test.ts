@@ -62,7 +62,7 @@ describe('startNotificationLoop', () => {
       return null
     })
     const remove = vi.fn()
-    const sleep = vi.fn(async () => undefined)
+    const sleep = vi.fn(async (_ms: number) => undefined)
     const loop = startNotificationLoop(credentials, {
       onBody: () => undefined,
       isHidden: () => false,
@@ -85,7 +85,7 @@ describe('startNotificationLoop', () => {
       hidden = true
       return null
     })
-    const sleep = vi.fn(async () => undefined)
+    const sleep = vi.fn(async (_ms: number) => undefined)
     const remove = vi.fn()
     const loop = startNotificationLoop(credentials, {
       onBody: () => undefined,
