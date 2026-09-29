@@ -3,6 +3,7 @@
   flex-direction: column;
   height: 100%;
   min-height: 0;
+  background: #efeae2;
 }
 
 .empty {
@@ -10,12 +11,41 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+  color: #667781;
+  background: #f0f2f5;
 }
 
 .header {
   flex-shrink: 0;
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #e0e0e0;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: #f0f2f5;
+  box-shadow: 0 1px 3px rgba(11, 20, 26, 0.08);
+  z-index: 1;
+}
+
+.headerAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #00a884;
+  color: #fff;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.headerTitle {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .messages {
@@ -24,7 +54,7 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  background: #efeae2;
+  background-color: #efeae2;
 }
 
 .messagesStack {
@@ -36,37 +66,43 @@
   padding: 12px 7%;
 }
 
+.bubbleOut,
+.bubbleIn {
+  max-width: 65%;
+  padding: 6px 7px 8px 9px;
+  box-shadow: 0 1px 0.5px rgba(11, 20, 26, 0.13);
+  position: relative;
+}
+
 .bubbleOut {
   align-self: flex-end;
-  max-width: 75%;
   background: #d9fdd3;
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
+  border-radius: 7.5px 7.5px 0 7.5px;
 }
 
 .bubbleIn {
   align-self: flex-start;
-  max-width: 75%;
   background: #fff;
-  border-radius: 8px;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid #e8e8e8;
+  border-radius: 7.5px 7.5px 7.5px 0;
 }
 
 .messageText {
   margin: 0;
   white-space: pre-wrap;
   word-break: break-word;
+  font-size: 14.2px;
+  line-height: 19px;
+  color: #111b21;
 }
 
 .messageMeta {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.25rem;
-  margin-top: 0.25rem;
-  font-size: 0.75rem;
-  color: #667;
+  gap: 3px;
+  margin-top: 2px;
+  font-size: 11px;
+  color: #667781;
 }
 
 .messageTime {
@@ -74,50 +110,87 @@
 }
 
 .status {
-  font-size: inherit;
+  color: #667781;
 }
 
 .statusRead {
-  font-size: inherit;
   color: #53bdeb;
 }
 
 .statusError {
-  font-size: inherit;
-  color: #c00;
+  color: #ea0038;
+  font-weight: 700;
 }
 
 .errorBlock {
-  margin-top: 0.5rem;
+  margin-top: 4px;
 }
 
 .errorText {
-  margin: 0 0 0.25rem;
-  color: #c00;
-  font-size: 0.875rem;
+  margin: 0 0 4px;
+  color: #ea0038;
+  font-size: 12px;
 }
 
 .form {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  border-top: 1px solid #e0e0e0;
+  gap: 6px;
+  padding: 10px 16px;
+  background: #f0f2f5;
+}
+
+.composer {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
 }
 
 .textarea {
+  flex: 1;
   width: 100%;
-  min-height: 4rem;
-  resize: vertical;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  field-sizing: content;
+  line-height: 1.4;
+  min-height: 1lh;
+  max-height: 6lh;
+  overflow-y: auto;
+  resize: none;
+  padding: 9px 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #fff;
   font-family: inherit;
+  font-size: 15px;
+  color: #111b21;
+}
+
+.send {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #00a884;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.send:disabled {
+  background: #8696a0;
+  cursor: default;
+}
+
+.sendIcon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
 }
 
 .counter {
   margin: 0;
-  color: #c00;
-  font-size: 0.875rem;
+  color: #ea0038;
+  font-size: 12px;
 }

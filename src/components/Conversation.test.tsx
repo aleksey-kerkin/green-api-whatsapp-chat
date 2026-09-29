@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
@@ -62,6 +63,23 @@ describe('Conversation', () => {
     const list = screen.getByTestId('message-list')
     expect(list).toContainElement(stack)
     expect(stack.textContent?.indexOf('привет')).toBeLessThan(stack.textContent?.indexOf('ответ') ?? -1)
-    expect(screen.getByLabelText('ошибка')).toHaveTextContent('!')
+    expect(screen.getByLabelText('ошибка')).toHaveTextContent('ошибка')
+  })
+
+  it('names the conversation header and the send control', () => {
+    render(<Conversation chat={chat} now={now} onSend={vi.fn()} onRetry={vi.fn()} />)
+    expect(screen.getByRole('heading', { name: '+79001112233' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Отправить' })).toBeInTheDocument()
+    expect(screen.getByLabelText('Сообщение')).toBeInTheDocument()
+  })
+
+  it('caps the message field with the lh unit', () => {
+    const moduleUrl = import.meta.url
+    const css = readFileSync(new URL('./Conversation.module.css', moduleUrl), 'utf8')
+    const rule = css.slice(css.indexOf('.textarea {'), css.indexOf('.send {'))
+    expect(rule).toContain('field-sizing: content')
+    expect(rule).toContain('min-height: 1lh')
+    expect(rule).toContain('max-height: 6lh')
+    expect(rule).not.toMatch(/max-height:\s*\d+px/)
   })
 })

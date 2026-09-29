@@ -11,6 +11,13 @@ type Props = {
   onRetry: (localId: string) => void
 }
 
+function avatarLabel(title: string): string {
+  const letters = title.replace(/[^A-Za-zА-Яа-яЁё]/g, '')
+  if (letters) return letters.slice(0, 1).toUpperCase()
+  const digits = title.replace(/\D/g, '')
+  return digits.slice(-2) || '?'
+}
+
 function statusAriaLabel(status: DeliveryStatus | undefined): string | undefined {
   if (!status) return undefined
   switch (status) {
@@ -27,23 +34,6 @@ function statusAriaLabel(status: DeliveryStatus | undefined): string | undefined
       return 'ошибка'
     default:
       return undefined
-  }
-}
-
-function statusMark(status: DeliveryStatus): string {
-  switch (status) {
-    case 'pending':
-      return '◌'
-    case 'sent':
-      return '✓'
-    case 'delivered':
-    case 'read':
-      return '✓✓'
-    case 'failed':
-    case 'noActiveSession':
-      return '!'
-    default:
-      return ''
   }
 }
 
@@ -74,7 +64,7 @@ function MessageBubble({
             className={status === 'read' ? styles.statusRead : isError ? styles.statusError : styles.status}
             aria-label={ariaLabel}
           >
-            {statusMark(status)}
+            {ariaLabel}
           </span>
         ) : null}
       </div>
@@ -130,7 +120,8 @@ export function Conversation({ chat, now, onSend, onRetry }: Props) {
   return (
     <div className={styles.conversation}>
       <header className={styles.header}>
-        <h2>{chat.title}</h2>
+        <span className={styles.headerAvatar} aria-hidden="true">{avatarLabel(chat.title)}</span>
+        <h2 className={styles.headerTitle}>{chat.title}</h2>
       </header>
       <div className={styles.messages} data-testid="message-list" ref={listRef}>
         <div className={styles.messagesStack} data-testid="message-stack">
@@ -151,19 +142,23 @@ export function Conversation({ chat, now, onSend, onRetry }: Props) {
           send()
         }}
       >
-        <textarea
-          className={styles.textarea}
-          aria-label="Сообщение"
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
-          onKeyDown={onKeyDown}
-        />
         {overLimit ? (
           <p className={styles.counter}>{value.length} / 20000</p>
         ) : null}
-        <button type="submit" disabled={sendDisabled}>
-          Отправить
-        </button>
+        <div className={styles.composer}>
+          <textarea
+            className={styles.textarea}
+            aria-label="Сообщение"
+            value={value}
+            onChange={(event) => setValue(event.target.value)}
+            onKeyDown={onKeyDown}
+          />
+          <button className={styles.send} type="submit" disabled={sendDisabled} aria-label="Отправить">
+            <svg viewBox="0 0 24 24" aria-hidden="true" className={styles.sendIcon}>
+              <path d="M3 11.5 21 3l-7.5 18-2.2-7.3L3 11.5z" />
+            </svg>
+          </button>
+        </div>
       </form>
     </div>
   )
