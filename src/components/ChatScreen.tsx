@@ -119,7 +119,7 @@ export function ChatScreen({
                   </span>
                   <div className={styles.chatMain}>
                     <div className={styles.chatRowTop}>
-                      <span className={styles.chatTitle}>{chat.title}</span>
+                      <span className={styles.chatTitle} title={chat.title}>{chat.title}</span>
                       {lastMessage ? (
                         <time className={styles.chatTime}>
                           {formatChatTime(lastMessage.timestamp, now)}

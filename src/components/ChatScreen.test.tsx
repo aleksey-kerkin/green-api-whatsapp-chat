@@ -86,6 +86,56 @@ describe('ChatScreen', () => {
     expect(screen.getByText('Anastasia')).toBeInTheDocument()
   })
 
+  it('ellipsizes a long chat title and keeps the full name in the title attribute', () => {
+    const longTitle = 'Anastasia Anastasia Kerkina'
+    const named = [{ ...chats[0], title: longTitle }]
+    window.matchMedia = vi.fn().mockImplementation((query: string) => ({
+      matches: query.includes('min-width: 48rem'),
+      media: query,
+      addEventListener: () => undefined,
+      removeEventListener: () => undefined,
+      dispatchEvent: () => false,
+    }))
+    render(
+      <ChatScreen
+        chats={named}
+        activeChatId={null}
+        stateInstance="authorized"
+        showEnableReceive={false}
+        storageWarning={false}
+        now={now}
+        onLogout={vi.fn()}
+        onSelect={vi.fn()}
+        onCreate={vi.fn()}
+        onSend={vi.fn()}
+        onRetry={vi.fn()}
+        onEnableReceive={vi.fn()}
+      />,
+    )
+    const title = screen.getByText(longTitle)
+    expect(title).toHaveAttribute('title', longTitle)
+    expect(title.className).toContain('chatTitle')
+    const preview = document.querySelector('[class*="chatPreview"]')
+    expect(preview).not.toHaveAttribute('title')
+
+    const moduleUrl = import.meta.url
+    const css = readFileSync(new URL('./ChatScreen.module.css', moduleUrl), 'utf8')
+    const rowTop = css.slice(css.indexOf('.chatRowTop {'), css.indexOf('.chatTitle {'))
+    const chatTitle = css.slice(css.indexOf('.chatTitle {'), css.indexOf('.chatTime {'))
+    const chatTime = css.slice(css.indexOf('.chatTime {'), css.indexOf('.chatPreview {'))
+    const chatPreview = css.slice(css.indexOf('.chatPreview {'), css.indexOf('.conversationPane {'))
+    const chatList = css.slice(css.indexOf('.chatList {'), css.indexOf('.chatRow {'))
+    expect(rowTop).toContain('min-width: 0')
+    expect(chatTitle).toContain('min-width: 0')
+    expect(chatTitle).toContain('flex: 1')
+    expect(chatTitle).toContain('text-overflow: ellipsis')
+    expect(chatTime).toContain('flex-shrink: 0')
+    expect(chatPreview).toContain('min-width: 0')
+    expect(chatPreview).toContain('text-overflow: ellipsis')
+    expect(chatList).toContain('overflow-x: hidden')
+    expect(chatList).toContain('overflow-y: auto')
+  })
+
   it('gives the wide list a flexible third and the narrow list the full width', () => {
     const moduleUrl = import.meta.url
     const css = readFileSync(new URL('./ChatScreen.module.css', moduleUrl), 'utf8')
