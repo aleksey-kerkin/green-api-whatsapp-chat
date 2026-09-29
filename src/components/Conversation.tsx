@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState, type KeyboardEvent } from 'react'
 import { formatChatTime } from '../model/time'
 import type { Chat, DeliveryStatus, Message } from '../model/types'
 import { MESSAGE_LIMIT } from '../model/types'
+import { avatarLabel } from './avatarLabel'
 import styles from './Conversation.module.css'
 
 type Props = {
@@ -9,13 +10,6 @@ type Props = {
   now: number
   onSend: (text: string) => void
   onRetry: (localId: string) => void
-}
-
-function avatarLabel(title: string): string {
-  const letters = title.replace(/[^A-Za-zА-Яа-яЁё]/g, '')
-  if (letters) return letters.slice(0, 1).toUpperCase()
-  const digits = title.replace(/\D/g, '')
-  return digits.slice(-2) || '?'
 }
 
 function statusAriaLabel(status: DeliveryStatus | undefined): string | undefined {

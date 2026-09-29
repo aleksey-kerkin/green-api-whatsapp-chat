@@ -5,18 +5,12 @@ import type { Chat } from '../model/types'
 import type { PhoneOk } from '../model/phone'
 import { Conversation } from './Conversation'
 import { NewChatDialog } from './NewChatDialog'
+import { avatarLabel } from './avatarLabel'
 import styles from './ChatScreen.module.css'
 
 const NARROW_QUERY = '(max-width: 767px)'
 
 const AVATAR_COLORS = ['#00a884', '#53bdeb', '#e67e22', '#7f66ff', '#ff5c8d', '#027eb5']
-
-function avatarLabel(title: string): string {
-  const letters = title.replace(/[^A-Za-zА-Яа-яЁё]/g, '')
-  if (letters) return letters.slice(0, 1).toUpperCase()
-  const digits = title.replace(/\D/g, '')
-  return digits.slice(-2) || '?'
-}
 
 function avatarColor(id: string): string {
   let hash = 0
