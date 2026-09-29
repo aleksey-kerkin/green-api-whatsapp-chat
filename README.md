@@ -26,6 +26,4 @@ npm run build
 
 ## GitHub Pages
 
-После включения Pages из GitHub Actions приложение доступно по адресу:
-
-`https://<user>.github.io/<repo>/`
+https://aleksey-kerkin.github.io/green-api-whatsapp-chat/
