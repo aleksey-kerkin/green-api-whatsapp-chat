@@ -24,23 +24,25 @@ export function NewChatDialog({ onClose, onCreate }: Props) {
   return (
     <div className={styles.overlay}>
       <form className={styles.dialog} onSubmit={onSubmit}>
-        <h2>Новый чат</h2>
-        <label className={styles.label}>
-          Номер телефона
-          <input
-            className={styles.input}
-            aria-label="Номер телефона"
-            value={phone}
-            onChange={(event) => {
-              setPhone(event.target.value)
-              setError('')
-            }}
-          />
-        </label>
-        {error ? <p className={styles.error} role="alert">{error}</p> : null}
-        <div className={styles.actions}>
-          <button type="button" onClick={onClose}>Отмена</button>
-          <button type="submit">Создать чат</button>
+        <h2 className={styles.heading}>Новый чат</h2>
+        <div className={styles.body}>
+          <label className={styles.label}>
+            Номер телефона
+            <input
+              className={styles.input}
+              aria-label="Номер телефона"
+              value={phone}
+              onChange={(event) => {
+                setPhone(event.target.value)
+                setError('')
+              }}
+            />
+          </label>
+          {error ? <p className={styles.error} role="alert">{error}</p> : null}
+          <div className={styles.actions}>
+            <button className={styles.cancel} type="button" onClick={onClose}>Отмена</button>
+            <button className={styles.submit} type="submit">Создать чат</button>
+          </div>
         </div>
       </form>
     </div>
