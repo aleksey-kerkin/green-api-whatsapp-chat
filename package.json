@@ -1,4 +1,7 @@
 {
+  "name": "whatsapp-chat",
+  "private": true,
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
