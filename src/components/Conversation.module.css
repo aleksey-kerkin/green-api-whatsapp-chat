@@ -41,6 +41,8 @@
 
 .headerTitle {
   margin: 0;
+  min-width: 0;
+  flex: 1;
   font-size: 1rem;
   font-weight: 500;
   overflow: hidden;
@@ -52,8 +54,6 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column;
   background-color: #efeae2;
 }
 

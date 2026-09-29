@@ -82,4 +82,32 @@ describe('Conversation', () => {
     expect(rule).toContain('max-height: 6lh')
     expect(rule).not.toMatch(/max-height:\s*\d+px/)
   })
+
+  it('keeps the full title on the header and scrolls the transcript inside the message list', () => {
+    const longTitle = 'Anastasia Anastasia Kerkina'
+    render(
+      <Conversation
+        chat={{ ...chat, title: longTitle }}
+        now={now}
+        onSend={vi.fn()}
+        onRetry={vi.fn()}
+      />,
+    )
+    const heading = screen.getByRole('heading', { name: longTitle })
+    expect(heading).toHaveAttribute('title', longTitle)
+    expect(heading).toHaveTextContent(longTitle)
+
+    const moduleUrl = import.meta.url
+    const css = readFileSync(new URL('./Conversation.module.css', moduleUrl), 'utf8')
+    const headerTitle = css.slice(css.indexOf('.headerTitle {'), css.indexOf('.messages {'))
+    const messages = css.slice(css.indexOf('.messages {'), css.indexOf('.messagesStack {'))
+    const stack = css.slice(css.indexOf('.messagesStack {'), css.indexOf('.bubbleOut,'))
+    expect(headerTitle).toContain('min-width: 0')
+    expect(headerTitle).toContain('flex: 1')
+    expect(headerTitle).toContain('text-overflow: ellipsis')
+    expect(messages).toContain('overflow-y: auto')
+    expect(messages).not.toContain('display: flex')
+    expect(stack).toContain('justify-content: flex-end')
+    expect(stack).toContain('min-height: 100%')
+  })
 })

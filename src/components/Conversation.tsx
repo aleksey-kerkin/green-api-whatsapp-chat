@@ -115,7 +115,7 @@ export function Conversation({ chat, now, onSend, onRetry }: Props) {
     <div className={styles.conversation}>
       <header className={styles.header}>
         <span className={styles.headerAvatar} aria-hidden="true">{avatarLabel(chat.title)}</span>
-        <h2 className={styles.headerTitle}>{chat.title}</h2>
+        <h2 className={styles.headerTitle} title={chat.title}>{chat.title}</h2>
       </header>
       <div className={styles.messages} data-testid="message-list" ref={listRef}>
         <div className={styles.messagesStack} data-testid="message-stack">
